@@ -46,5 +46,6 @@
     <orderEntry type="library" name="Maven: io.grpc:grpc-stub:1.11.0" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Maven: org.decimal4j:decimal4j:1.0.3" level="project" />
+    <orderEntry type="library" name="Python 3.6.0 (C:\Users\wosma\Anaconda3\python.exe) interpreter library" level="application" />
   </component>
 </module>

@@ -19,13 +19,10 @@ option java_outer_classname = "ExchangeProto";
 option objc_class_prefix = "EXP";
 
 service CurrencyProvider {
-    rpc getExchangeRates (stream Currency) returns (stream ExchangeRate) {
+    rpc getExchangeRates (Currency) returns (stream ExchangeRate) {
     }
 }
 
-message Currency {
-    CurrencyType currency = 1;
-}
 enum CurrencyType {
     PLN = 0;
     EUR = 1;
@@ -38,4 +35,16 @@ message ExchangeRate {
     CurrencyType currency = 1;
     double rate = 2;
 }
+
+message Currency {
+    repeated CurrencyType currency = 1;
+}
+
+//message CurrencyValues{
+//    repeated ExchangeRate ex= 1;
+//}
+
+
+
+
 

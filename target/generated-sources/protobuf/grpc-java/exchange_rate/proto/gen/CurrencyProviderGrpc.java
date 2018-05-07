@@ -49,7 +49,7 @@ public final class CurrencyProviderGrpc {
         if ((getGetExchangeRatesMethod = CurrencyProviderGrpc.getGetExchangeRatesMethod) == null) {
           CurrencyProviderGrpc.getGetExchangeRatesMethod = getGetExchangeRatesMethod = 
               io.grpc.MethodDescriptor.<exchange_rate.proto.gen.Currency, exchange_rate.proto.gen.ExchangeRate>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
               .setFullMethodName(generateFullMethodName(
                   "CurrencyProvider", "getExchangeRates"))
               .setSampledToLocalTracing(true)
@@ -94,16 +94,16 @@ public final class CurrencyProviderGrpc {
 
     /**
      */
-    public io.grpc.stub.StreamObserver<exchange_rate.proto.gen.Currency> getExchangeRates(
+    public void getExchangeRates(exchange_rate.proto.gen.Currency request,
         io.grpc.stub.StreamObserver<exchange_rate.proto.gen.ExchangeRate> responseObserver) {
-      return asyncUnimplementedStreamingCall(getGetExchangeRatesMethodHelper(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetExchangeRatesMethodHelper(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
             getGetExchangeRatesMethodHelper(),
-            asyncBidiStreamingCall(
+            asyncServerStreamingCall(
               new MethodHandlers<
                 exchange_rate.proto.gen.Currency,
                 exchange_rate.proto.gen.ExchangeRate>(
@@ -132,10 +132,10 @@ public final class CurrencyProviderGrpc {
 
     /**
      */
-    public io.grpc.stub.StreamObserver<exchange_rate.proto.gen.Currency> getExchangeRates(
+    public void getExchangeRates(exchange_rate.proto.gen.Currency request,
         io.grpc.stub.StreamObserver<exchange_rate.proto.gen.ExchangeRate> responseObserver) {
-      return asyncBidiStreamingCall(
-          getChannel().newCall(getGetExchangeRatesMethodHelper(), getCallOptions()), responseObserver);
+      asyncServerStreamingCall(
+          getChannel().newCall(getGetExchangeRatesMethodHelper(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -155,6 +155,14 @@ public final class CurrencyProviderGrpc {
     protected CurrencyProviderBlockingStub build(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
       return new CurrencyProviderBlockingStub(channel, callOptions);
+    }
+
+    /**
+     */
+    public java.util.Iterator<exchange_rate.proto.gen.ExchangeRate> getExchangeRates(
+        exchange_rate.proto.gen.Currency request) {
+      return blockingServerStreamingCall(
+          getChannel(), getGetExchangeRatesMethodHelper(), getCallOptions(), request);
     }
   }
 
@@ -196,6 +204,10 @@ public final class CurrencyProviderGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
+        case METHODID_GET_EXCHANGE_RATES:
+          serviceImpl.getExchangeRates((exchange_rate.proto.gen.Currency) request,
+              (io.grpc.stub.StreamObserver<exchange_rate.proto.gen.ExchangeRate>) responseObserver);
+          break;
         default:
           throw new AssertionError();
       }
@@ -206,9 +218,6 @@ public final class CurrencyProviderGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_GET_EXCHANGE_RATES:
-          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.getExchangeRates(
-              (io.grpc.stub.StreamObserver<exchange_rate.proto.gen.ExchangeRate>) responseObserver);
         default:
           throw new AssertionError();
       }

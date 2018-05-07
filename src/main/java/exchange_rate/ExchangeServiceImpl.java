@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
 public class ExchangeServiceImpl extends CurrencyProviderGrpc.CurrencyProviderImplBase {
 
     private static final Logger logger = Logger.getLogger(ExchangeServiceImpl.class.getName());
-    private final int periodTimeCurr = 5;
-    private final int periodTimePing = 2;
+    private final int periodTimeCurr = 15;
+    private final int periodTimePing = 10;
 
     private final Map<CurrencyType, Double> exchangeRateValue = new HashMap<>();
     private final Map<StreamObserver<ExchangeRate>, List<CurrencyType>> bankCurrencies = new HashMap<>();
@@ -33,34 +33,65 @@ public class ExchangeServiceImpl extends CurrencyProviderGrpc.CurrencyProviderIm
         exchangeRateValue.put(CurrencyType.USD, 3.4);
 
 
-        scheduler.scheduleAtFixedRate(this::changeCurrenciesValue, 0, periodTimeCurr, TimeUnit.SECONDS);
-        scheduler.scheduleAtFixedRate(this::notifyBanks,0, periodTimePing, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(this::changeCurrenciesValue, 1, periodTimeCurr, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(this::notifyBanks,1, periodTimePing, TimeUnit.SECONDS);
     }
+
+    @Override
+    public void getExchangeRates(Currency request, StreamObserver<ExchangeRate> responseObserver) {
+        bankCurrencies.putIfAbsent(responseObserver, new ArrayList<>());
+        bankCurrencies.get(responseObserver).addAll(request.getCurrencyList());
+    }
+
+    //    @Override
+//    public void getExchangeRates(Currency request, StreamObserver<ExchangeRate> responseObserver) {
+//        bankCurrencies.putIfAbsent(responseObserver, new ArrayList<>());
+//
+//        new StreamObserver<Currency>() {
+//            @Override
+//            public void onNext(Currency currency) {
+//                bankCurrencies.get(responseObserver).addAll(currency.getCurrencyList());
+//                logger.info("Received currencies " + currency.getCurrencyList());
+//            }
+//
+//            @Override
+//            public void onError(Throwable throwable) {
+//                logger.warn("Encountered error in getExchangeRates", throwable);
+//            }
+//
+//            @Override
+//            public void onCompleted() {
+//                bankCurrencies.remove(responseObserver);
+//                responseObserver.onCompleted();
+//                logger.info("Streaming completed");
+//            }
+//        };
+//    }
 
     //exchangeRate to client from server, currency to server from client
-    @Override
-    public StreamObserver<Currency> getExchangeRates(StreamObserver<ExchangeRate> responseObserver) {
-        bankCurrencies.putIfAbsent(responseObserver, new ArrayList<>());
-        return new StreamObserver<Currency>() {
-            @Override
-            public void onNext(Currency currency) {
-                bankCurrencies.get(responseObserver).add(currency.getCurrency());
-                logger.info("Received currency " + currency.getCurrency());
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                logger.warn("Encountered error in getExchangeRates", throwable);
-            }
-
-            @Override
-            public void onCompleted() {
-                bankCurrencies.remove(responseObserver);
-                responseObserver.onCompleted();
-                logger.info("Streaming completed");
-            }
-        };
-    }
+//    @Override
+//    public StreamObserver<Currency> getExchangeRates(StreamObserver<ExchangeRate> responseObserver) {
+//        bankCurrencies.putIfAbsent(responseObserver, new ArrayList<>());
+//        return new StreamObserver<Currency>() {
+//            @Override
+//            public void onNext(Currency currency) {
+//                bankCurrencies.get(responseObserver).add(currency.getCurrency());
+//                logger.info("Received currency " + currency.getCurrency());
+//            }
+//
+//            @Override
+//            public void onError(Throwable throwable) {
+//                logger.warn("Encountered error in getExchangeRates", throwable);
+//            }
+//
+//            @Override
+//            public void onCompleted() {
+//                bankCurrencies.remove(responseObserver);
+//                responseObserver.onCompleted();
+//                logger.info("Streaming completed");
+//            }
+//        };
+//    }
 
     private void changeCurrenciesValue() {
         for (CurrencyType cType : CurrencyType.values()) {

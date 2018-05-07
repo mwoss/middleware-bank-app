@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private Currency() {
-    currency_ = 0;
+    currency_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -52,8 +52,25 @@ private static final long serialVersionUID = 0L;
           }
           case 8: {
             int rawValue = input.readEnum();
-
-            currency_ = rawValue;
+            if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+              currency_ = new java.util.ArrayList<java.lang.Integer>();
+              mutable_bitField0_ |= 0x00000001;
+            }
+            currency_.add(rawValue);
+            break;
+          }
+          case 10: {
+            int length = input.readRawVarint32();
+            int oldLimit = input.pushLimit(length);
+            while(input.getBytesUntilLimit() > 0) {
+              int rawValue = input.readEnum();
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                currency_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              currency_.add(rawValue);
+            }
+            input.popLimit(oldLimit);
             break;
           }
         }
@@ -64,6 +81,9 @@ private static final long serialVersionUID = 0L;
       throw new com.google.protobuf.InvalidProtocolBufferException(
           e).setUnfinishedMessage(this);
     } finally {
+      if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+        currency_ = java.util.Collections.unmodifiableList(currency_);
+      }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
     }
@@ -81,20 +101,49 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CURRENCY_FIELD_NUMBER = 1;
-  private int currency_;
+  private java.util.List<java.lang.Integer> currency_;
+  private static final com.google.protobuf.Internal.ListAdapter.Converter<
+      java.lang.Integer, exchange_rate.proto.gen.CurrencyType> currency_converter_ =
+          new com.google.protobuf.Internal.ListAdapter.Converter<
+              java.lang.Integer, exchange_rate.proto.gen.CurrencyType>() {
+            public exchange_rate.proto.gen.CurrencyType convert(java.lang.Integer from) {
+              exchange_rate.proto.gen.CurrencyType result = exchange_rate.proto.gen.CurrencyType.valueOf(from);
+              return result == null ? exchange_rate.proto.gen.CurrencyType.UNRECOGNIZED : result;
+            }
+          };
   /**
-   * <code>.CurrencyType currency = 1;</code>
+   * <code>repeated .CurrencyType currency = 1;</code>
    */
-  public int getCurrencyValue() {
+  public java.util.List<exchange_rate.proto.gen.CurrencyType> getCurrencyList() {
+    return new com.google.protobuf.Internal.ListAdapter<
+        java.lang.Integer, exchange_rate.proto.gen.CurrencyType>(currency_, currency_converter_);
+  }
+  /**
+   * <code>repeated .CurrencyType currency = 1;</code>
+   */
+  public int getCurrencyCount() {
+    return currency_.size();
+  }
+  /**
+   * <code>repeated .CurrencyType currency = 1;</code>
+   */
+  public exchange_rate.proto.gen.CurrencyType getCurrency(int index) {
+    return currency_converter_.convert(currency_.get(index));
+  }
+  /**
+   * <code>repeated .CurrencyType currency = 1;</code>
+   */
+  public java.util.List<java.lang.Integer>
+  getCurrencyValueList() {
     return currency_;
   }
   /**
-   * <code>.CurrencyType currency = 1;</code>
+   * <code>repeated .CurrencyType currency = 1;</code>
    */
-  public exchange_rate.proto.gen.CurrencyType getCurrency() {
-    exchange_rate.proto.gen.CurrencyType result = exchange_rate.proto.gen.CurrencyType.valueOf(currency_);
-    return result == null ? exchange_rate.proto.gen.CurrencyType.UNRECOGNIZED : result;
+  public int getCurrencyValue(int index) {
+    return currency_.get(index);
   }
+  private int currencyMemoizedSerializedSize;
 
   private byte memoizedIsInitialized = -1;
   public final boolean isInitialized() {
@@ -108,8 +157,13 @@ private static final long serialVersionUID = 0L;
 
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (currency_ != exchange_rate.proto.gen.CurrencyType.PLN.getNumber()) {
-      output.writeEnum(1, currency_);
+    getSerializedSize();
+    if (getCurrencyList().size() > 0) {
+      output.writeUInt32NoTag(10);
+      output.writeUInt32NoTag(currencyMemoizedSerializedSize);
+    }
+    for (int i = 0; i < currency_.size(); i++) {
+      output.writeEnumNoTag(currency_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -119,9 +173,17 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (currency_ != exchange_rate.proto.gen.CurrencyType.PLN.getNumber()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeEnumSize(1, currency_);
+    {
+      int dataSize = 0;
+      for (int i = 0; i < currency_.size(); i++) {
+        dataSize += com.google.protobuf.CodedOutputStream
+          .computeEnumSizeNoTag(currency_.get(i));
+      }
+      size += dataSize;
+      if (!getCurrencyList().isEmpty()) {  size += 1;
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32SizeNoTag(dataSize);
+      }currencyMemoizedSerializedSize = dataSize;
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -139,7 +201,7 @@ private static final long serialVersionUID = 0L;
     exchange_rate.proto.gen.Currency other = (exchange_rate.proto.gen.Currency) obj;
 
     boolean result = true;
-    result = result && currency_ == other.currency_;
+    result = result && currency_.equals(other.currency_);
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -151,8 +213,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + CURRENCY_FIELD_NUMBER;
-    hash = (53 * hash) + currency_;
+    if (getCurrencyCount() > 0) {
+      hash = (37 * hash) + CURRENCY_FIELD_NUMBER;
+      hash = (53 * hash) + currency_.hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -282,8 +346,8 @@ private static final long serialVersionUID = 0L;
     }
     public Builder clear() {
       super.clear();
-      currency_ = 0;
-
+      currency_ = java.util.Collections.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -306,6 +370,11 @@ private static final long serialVersionUID = 0L;
 
     public exchange_rate.proto.gen.Currency buildPartial() {
       exchange_rate.proto.gen.Currency result = new exchange_rate.proto.gen.Currency(this);
+      int from_bitField0_ = bitField0_;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        currency_ = java.util.Collections.unmodifiableList(currency_);
+        bitField0_ = (bitField0_ & ~0x00000001);
+      }
       result.currency_ = currency_;
       onBuilt();
       return result;
@@ -348,8 +417,15 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(exchange_rate.proto.gen.Currency other) {
       if (other == exchange_rate.proto.gen.Currency.getDefaultInstance()) return this;
-      if (other.currency_ != 0) {
-        setCurrencyValue(other.getCurrencyValue());
+      if (!other.currency_.isEmpty()) {
+        if (currency_.isEmpty()) {
+          currency_ = other.currency_;
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          ensureCurrencyIsMutable();
+          currency_.addAll(other.currency_);
+        }
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -377,47 +453,122 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
+    private int bitField0_;
 
-    private int currency_ = 0;
-    /**
-     * <code>.CurrencyType currency = 1;</code>
-     */
-    public int getCurrencyValue() {
-      return currency_;
+    private java.util.List<java.lang.Integer> currency_ =
+      java.util.Collections.emptyList();
+    private void ensureCurrencyIsMutable() {
+      if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+        currency_ = new java.util.ArrayList<java.lang.Integer>(currency_);
+        bitField0_ |= 0x00000001;
+      }
     }
     /**
-     * <code>.CurrencyType currency = 1;</code>
+     * <code>repeated .CurrencyType currency = 1;</code>
      */
-    public Builder setCurrencyValue(int value) {
-      currency_ = value;
-      onChanged();
-      return this;
+    public java.util.List<exchange_rate.proto.gen.CurrencyType> getCurrencyList() {
+      return new com.google.protobuf.Internal.ListAdapter<
+          java.lang.Integer, exchange_rate.proto.gen.CurrencyType>(currency_, currency_converter_);
     }
     /**
-     * <code>.CurrencyType currency = 1;</code>
+     * <code>repeated .CurrencyType currency = 1;</code>
      */
-    public exchange_rate.proto.gen.CurrencyType getCurrency() {
-      exchange_rate.proto.gen.CurrencyType result = exchange_rate.proto.gen.CurrencyType.valueOf(currency_);
-      return result == null ? exchange_rate.proto.gen.CurrencyType.UNRECOGNIZED : result;
+    public int getCurrencyCount() {
+      return currency_.size();
     }
     /**
-     * <code>.CurrencyType currency = 1;</code>
+     * <code>repeated .CurrencyType currency = 1;</code>
      */
-    public Builder setCurrency(exchange_rate.proto.gen.CurrencyType value) {
+    public exchange_rate.proto.gen.CurrencyType getCurrency(int index) {
+      return currency_converter_.convert(currency_.get(index));
+    }
+    /**
+     * <code>repeated .CurrencyType currency = 1;</code>
+     */
+    public Builder setCurrency(
+        int index, exchange_rate.proto.gen.CurrencyType value) {
       if (value == null) {
         throw new NullPointerException();
       }
-      
-      currency_ = value.getNumber();
+      ensureCurrencyIsMutable();
+      currency_.set(index, value.getNumber());
       onChanged();
       return this;
     }
     /**
-     * <code>.CurrencyType currency = 1;</code>
+     * <code>repeated .CurrencyType currency = 1;</code>
+     */
+    public Builder addCurrency(exchange_rate.proto.gen.CurrencyType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      ensureCurrencyIsMutable();
+      currency_.add(value.getNumber());
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated .CurrencyType currency = 1;</code>
+     */
+    public Builder addAllCurrency(
+        java.lang.Iterable<? extends exchange_rate.proto.gen.CurrencyType> values) {
+      ensureCurrencyIsMutable();
+      for (exchange_rate.proto.gen.CurrencyType value : values) {
+        currency_.add(value.getNumber());
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated .CurrencyType currency = 1;</code>
      */
     public Builder clearCurrency() {
-      
-      currency_ = 0;
+      currency_ = java.util.Collections.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000001);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated .CurrencyType currency = 1;</code>
+     */
+    public java.util.List<java.lang.Integer>
+    getCurrencyValueList() {
+      return java.util.Collections.unmodifiableList(currency_);
+    }
+    /**
+     * <code>repeated .CurrencyType currency = 1;</code>
+     */
+    public int getCurrencyValue(int index) {
+      return currency_.get(index);
+    }
+    /**
+     * <code>repeated .CurrencyType currency = 1;</code>
+     */
+    public Builder setCurrencyValue(
+        int index, int value) {
+      ensureCurrencyIsMutable();
+      currency_.set(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated .CurrencyType currency = 1;</code>
+     */
+    public Builder addCurrencyValue(int value) {
+      ensureCurrencyIsMutable();
+      currency_.add(value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated .CurrencyType currency = 1;</code>
+     */
+    public Builder addAllCurrencyValue(
+        java.lang.Iterable<java.lang.Integer> values) {
+      ensureCurrencyIsMutable();
+      for (int value : values) {
+        currency_.add(value);
+      }
       onChanged();
       return this;
     }

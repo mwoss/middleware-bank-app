@@ -8,11 +8,24 @@ public interface CurrencyOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.CurrencyType currency = 1;</code>
+   * <code>repeated .CurrencyType currency = 1;</code>
    */
-  int getCurrencyValue();
+  java.util.List<exchange_rate.proto.gen.CurrencyType> getCurrencyList();
   /**
-   * <code>.CurrencyType currency = 1;</code>
+   * <code>repeated .CurrencyType currency = 1;</code>
    */
-  exchange_rate.proto.gen.CurrencyType getCurrency();
+  int getCurrencyCount();
+  /**
+   * <code>repeated .CurrencyType currency = 1;</code>
+   */
+  exchange_rate.proto.gen.CurrencyType getCurrency(int index);
+  /**
+   * <code>repeated .CurrencyType currency = 1;</code>
+   */
+  java.util.List<java.lang.Integer>
+  getCurrencyValueList();
+  /**
+   * <code>repeated .CurrencyType currency = 1;</code>
+   */
+  int getCurrencyValue(int index);
 }
