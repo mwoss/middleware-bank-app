@@ -1,5 +1,10 @@
 package bank;
 
+import bank.utils.AccountFactoryImpl;
+import com.zeroc.Ice.Communicator;
+import com.zeroc.Ice.ObjectAdapter;
+import com.zeroc.Ice.Util;
+import com.zeroc.IceInternal.Ex;
 import exchange_rate.ExchangeServiceImpl;
 import exchange_rate.proto.gen.Currency;
 import exchange_rate.proto.gen.CurrencyProviderGrpc;
@@ -20,14 +25,15 @@ import java.util.concurrent.TimeUnit;
 
 public class Bank {
 
-    private static final Logger logger = Logger.getLogger(ExchangeServiceImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(Bank.class.getName());
     private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     private final ManagedChannel channel;
     private final CurrencyProviderGrpc.CurrencyProviderStub currencyProviderStub;
 
-    private final Map<CurrencyType, Double> exchangeRateValue = new HashMap<>();
+    private final HashMap<CurrencyType, Double> exchangeRateValue = new HashMap<>();
     private String bankName;
+    private final String bankPort = "10001";
 
     public Bank(String host, int port) {
         channel = ManagedChannelBuilder.forAddress(host, port)
@@ -40,6 +46,7 @@ public class Bank {
 
     private void start() throws InterruptedException {
         System.out.println("Input bank name");
+        Communicator communicator = null;
         try {
             bankName = br.readLine();
             System.out.println("Type currencies you are interested in (PLN, JEN, EUR, USD, SZK)");
@@ -47,16 +54,41 @@ public class Bank {
             String currencies = br.readLine();
             Arrays.stream(currencies.split(";"))
                     .forEach(currency -> exchangeRateValue.put(CurrencyType.valueOf(currency), 1.0));
+
+            subscribeOnExchangeRate();
+
+            communicator = Util.initialize();
+            ObjectAdapter objectAdapter = communicator.createObjectAdapterWithEndpoints("Adapter1",
+                    "tcp -h localhost -p " + bankPort + ":udp -h localhost -p " + bankPort);
+
+            AccountFactoryImpl accountFactoryServant = new AccountFactoryImpl(exchangeRateValue);
+            objectAdapter.activate();
+            logger.info("Bank process started. Bank name: " + bankName + " Port: " + bankPort);
+            communicator.waitForShutdown();
+
+
         } catch (IOException e) {
-            System.out.println("Something went wrong. Try again");
+            logger.warn("Something went wrong. Try again");
             System.exit(-1);
-        } catch (IllegalArgumentException e){
-            System.out.println("Invalid currency name");
+        } catch (IllegalArgumentException e) {
+            logger.warn("Invalid currency name");
             System.exit(-2);
+
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+            System.exit(-3);
         }
-        subscribeOnExchangeRate();
-        Thread.sleep(5000);
-        shutdown();
+        finally {
+            if (communicator != null) {
+                try{
+                    communicator.destroy();
+                }catch (Exception e){
+                    logger.warn(e.getMessage());
+                    System.exit(-4);
+                }
+            }
+            shutdown();
+        }
     }
 
 

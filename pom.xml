@@ -75,6 +75,11 @@
             <artifactId>decimal4j</artifactId>
             <version>1.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.zeroc</groupId>
+            <artifactId>ice</artifactId>
+            <version>3.7.1</version>
+        </dependency>
     </dependencies>
 
 </project>

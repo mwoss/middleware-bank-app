@@ -1,7 +1,4 @@
-#ifdef BANK_ICE
-#define BANK_ICE
-
-module bankClientcd{
+module bankClient{
     enum AccountType{
         NORMAL = 0,
         PREMIUM = 1
@@ -17,7 +14,7 @@ module bankClientcd{
     exception UnsupportedCurrencyException{
         string reason;
     };
-    exception DateFormatException{
+    exception DateFormatError{
         string reason;
     };
     exception InvalidPeselStructure{
@@ -25,9 +22,9 @@ module bankClientcd{
     };
 
     class Date{
-        byte day;
-        byte month;
-        byte year;
+        short day;
+        short month;
+        short year;
     };
 
     class Person{
@@ -52,14 +49,13 @@ module bankClientcd{
 
     interface Account{
         double accountBalance();
+        void deposit(double money);
     };
     interface PremiumAccount extends Account{
-        CreditInfo getCredit(Credit credit) throws DateFormatException, UnsupportedCurrencyException;
+        CreditInfo getCredit(Credit credit) throws DateFormatError, UnsupportedCurrencyException;
     };
 
     interface AccountFactory{
-        Account* createAccount(Person person, double accoutBalance) throws InvalidPeselStructure;
+        Account* createAccount(Person person, double monthlyIncome) throws InvalidPeselStructure;
     };
 };
-
-#endif
