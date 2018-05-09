@@ -4,7 +4,7 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class ExchangeServer {
     private static final Logger logger = Logger.getLogger(ExchangeServer.class.getName());

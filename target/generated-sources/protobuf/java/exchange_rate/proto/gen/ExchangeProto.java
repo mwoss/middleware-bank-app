@@ -15,15 +15,15 @@ public final class ExchangeProto {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Currency_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Currency_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ExchangeRate_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_ExchangeRate_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Currency_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_Currency_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -33,10 +33,10 @@ public final class ExchangeProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016exchange.proto\"+\n\010Currency\022\037\n\010currency" +
-      "\030\001 \003(\0162\r.CurrencyType\"=\n\014ExchangeRate\022\037\n" +
-      "\010currency\030\001 \001(\0162\r.CurrencyType\022\014\n\004rate\030\002" +
-      " \001(\001*;\n\014CurrencyType\022\007\n\003PLN\020\000\022\007\n\003EUR\020\001\022\007" +
+      "\n\016exchange.proto\"=\n\014ExchangeRate\022\037\n\010curr" +
+      "ency\030\001 \001(\0162\r.CurrencyType\022\014\n\004rate\030\002 \001(\001\"" +
+      "+\n\010Currency\022\037\n\010currency\030\001 \003(\0162\r.Currency" +
+      "Type*;\n\014CurrencyType\022\007\n\003PLN\020\000\022\007\n\003EUR\020\001\022\007" +
       "\n\003JEN\020\002\022\007\n\003USD\020\003\022\007\n\003SZK\020\0042D\n\020CurrencyPro" +
       "vider\0220\n\020getExchangeRates\022\t.Currency\032\r.E" +
       "xchangeRate\"\0000\001B0\n\027exchange_rate.proto.g" +
@@ -54,18 +54,18 @@ public final class ExchangeProto {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_Currency_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_Currency_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Currency_descriptor,
-        new java.lang.String[] { "Currency", });
     internal_static_ExchangeRate_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(0);
     internal_static_ExchangeRate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ExchangeRate_descriptor,
         new java.lang.String[] { "Currency", "Rate", });
+    internal_static_Currency_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_Currency_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_Currency_descriptor,
+        new java.lang.String[] { "Currency", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -2,10 +2,9 @@ package bank;
 
 import bank.utils.AccountFactoryImpl;
 import com.zeroc.Ice.Communicator;
+import com.zeroc.Ice.Identity;
 import com.zeroc.Ice.ObjectAdapter;
 import com.zeroc.Ice.Util;
-import com.zeroc.IceInternal.Ex;
-import exchange_rate.ExchangeServiceImpl;
 import exchange_rate.proto.gen.Currency;
 import exchange_rate.proto.gen.CurrencyProviderGrpc;
 import exchange_rate.proto.gen.CurrencyType;
@@ -20,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Bank {
@@ -62,6 +60,7 @@ public class Bank {
                     "tcp -h localhost -p " + bankPort + ":udp -h localhost -p " + bankPort);
 
             AccountFactoryImpl accountFactoryServant = new AccountFactoryImpl(exchangeRateValue);
+            objectAdapter.add(accountFactoryServant, new Identity(bankName, "bank"));
             objectAdapter.activate();
             logger.info("Bank process started. Bank name: " + bankName + " Port: " + bankPort);
             communicator.waitForShutdown();
@@ -77,12 +76,11 @@ public class Bank {
         } catch (Exception e) {
             logger.warn(e.getMessage());
             System.exit(-3);
-        }
-        finally {
+        } finally {
             if (communicator != null) {
-                try{
+                try {
                     communicator.destroy();
-                }catch (Exception e){
+                } catch (Exception e) {
                     logger.warn(e.getMessage());
                     System.exit(-4);
                 }

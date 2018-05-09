@@ -18,12 +18,12 @@ import java.util.concurrent.TimeUnit;
 public class ExchangeServiceImpl extends CurrencyProviderGrpc.CurrencyProviderImplBase {
 
     private static final Logger logger = Logger.getLogger(ExchangeServiceImpl.class.getName());
-    private final int periodTimeCurr = 15;
-    private final int periodTimePing = 10;
+    private final int periodTimeCurr = 8;
+    private final int periodTimePing = 5;
 
     private final Map<CurrencyType, Double> exchangeRateValue = new HashMap<>();
     private final Map<StreamObserver<ExchangeRate>, List<CurrencyType>> bankCurrencies = new HashMap<>();
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
     public ExchangeServiceImpl() {
         exchangeRateValue.put(CurrencyType.EUR, 4.0);
@@ -94,11 +94,10 @@ public class ExchangeServiceImpl extends CurrencyProviderGrpc.CurrencyProviderIm
 //    }
 
     private void changeCurrenciesValue() {
-        for (CurrencyType cType : CurrencyType.values()) {
+        for (CurrencyType cType : exchangeRateValue.keySet()) {
             if (ThreadLocalRandom.current().nextInt(2) == 0) {
-                double newCurrencyValue = exchangeRateValue.get(cType)
-                        * ThreadLocalRandom.current().nextDouble(0.8, 1.2);
-                exchangeRateValue.replace(cType, DoubleRounder.round(newCurrencyValue, 2));
+                double newCurrencyValue = exchangeRateValue.get(cType) * ThreadLocalRandom.current().nextDouble(0.8, 1.2);
+                exchangeRateValue.put(cType, DoubleRounder.round(newCurrencyValue, 2));
             }
         }
         logger.info("Currencies values changed");
