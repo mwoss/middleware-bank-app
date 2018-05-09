@@ -20,10 +20,21 @@
 
 package generated.bankClient;
 
-public class Credit extends com.zeroc.Ice.Value
+public class Credit implements java.lang.Cloneable,
+                               java.io.Serializable
 {
+    public double cost;
+
+    public Date startDate;
+
+    public Date endDate;
+
+    public CurrencyType currencyType;
+
     public Credit()
     {
+        this.startDate = new Date();
+        this.endDate = new Date();
         this.currencyType = CurrencyType.PLN;
     }
 
@@ -35,51 +46,144 @@ public class Credit extends com.zeroc.Ice.Value
         this.currencyType = currencyType;
     }
 
-    public double cost;
+    public boolean equals(java.lang.Object rhs)
+    {
+        if(this == rhs)
+        {
+            return true;
+        }
+        Credit r = null;
+        if(rhs instanceof Credit)
+        {
+            r = (Credit)rhs;
+        }
 
-    public Date startDate;
+        if(r != null)
+        {
+            if(this.cost != r.cost)
+            {
+                return false;
+            }
+            if(this.startDate != r.startDate)
+            {
+                if(this.startDate == null || r.startDate == null || !this.startDate.equals(r.startDate))
+                {
+                    return false;
+                }
+            }
+            if(this.endDate != r.endDate)
+            {
+                if(this.endDate == null || r.endDate == null || !this.endDate.equals(r.endDate))
+                {
+                    return false;
+                }
+            }
+            if(this.currencyType != r.currencyType)
+            {
+                if(this.currencyType == null || r.currencyType == null || !this.currencyType.equals(r.currencyType))
+                {
+                    return false;
+                }
+            }
 
-    public Date endDate;
+            return true;
+        }
 
-    public CurrencyType currencyType;
+        return false;
+    }
+
+    public int hashCode()
+    {
+        int h_ = 5381;
+        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, "::bankClient::Credit");
+        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, cost);
+        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, startDate);
+        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, endDate);
+        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, currencyType);
+        return h_;
+    }
 
     public Credit clone()
     {
-        return (Credit)super.clone();
+        Credit c = null;
+        try
+        {
+            c = (Credit)super.clone();
+        }
+        catch(CloneNotSupportedException ex)
+        {
+            assert false; // impossible
+        }
+        return c;
     }
 
-    public static String ice_staticId()
+    public void ice_writeMembers(com.zeroc.Ice.OutputStream ostr)
     {
-        return "::bankClient::Credit";
+        ostr.writeDouble(this.cost);
+        Date.ice_write(ostr, this.startDate);
+        Date.ice_write(ostr, this.endDate);
+        CurrencyType.ice_write(ostr, this.currencyType);
     }
 
-    @Override
-    public String ice_id()
+    public void ice_readMembers(com.zeroc.Ice.InputStream istr)
     {
-        return ice_staticId();
+        this.cost = istr.readDouble();
+        this.startDate = Date.ice_read(istr);
+        this.endDate = Date.ice_read(istr);
+        this.currencyType = CurrencyType.ice_read(istr);
     }
 
-    public static final long serialVersionUID = 1434179800L;
-
-    @Override
-    protected void _iceWriteImpl(com.zeroc.Ice.OutputStream ostr_)
+    static public void ice_write(com.zeroc.Ice.OutputStream ostr, Credit v)
     {
-        ostr_.startSlice(ice_staticId(), -1, true);
-        ostr_.writeDouble(cost);
-        ostr_.writeValue(startDate);
-        ostr_.writeValue(endDate);
-        CurrencyType.ice_write(ostr_, currencyType);
-        ostr_.endSlice();
+        if(v == null)
+        {
+            _nullMarshalValue.ice_writeMembers(ostr);
+        }
+        else
+        {
+            v.ice_writeMembers(ostr);
+        }
     }
 
-    @Override
-    protected void _iceReadImpl(com.zeroc.Ice.InputStream istr_)
+    static public Credit ice_read(com.zeroc.Ice.InputStream istr)
     {
-        istr_.startSlice();
-        cost = istr_.readDouble();
-        istr_.readValue(v -> startDate = v, Date.class);
-        istr_.readValue(v -> endDate = v, Date.class);
-        currencyType = CurrencyType.ice_read(istr_);
-        istr_.endSlice();
+        Credit v = new Credit();
+        v.ice_readMembers(istr);
+        return v;
     }
+
+    static public void ice_write(com.zeroc.Ice.OutputStream ostr, int tag, java.util.Optional<Credit> v)
+    {
+        if(v != null && v.isPresent())
+        {
+            ice_write(ostr, tag, v.get());
+        }
+    }
+
+    static public void ice_write(com.zeroc.Ice.OutputStream ostr, int tag, Credit v)
+    {
+        if(ostr.writeOptional(tag, com.zeroc.Ice.OptionalFormat.FSize))
+        {
+            int pos = ostr.startSize();
+            ice_write(ostr, v);
+            ostr.endSize(pos);
+        }
+    }
+
+    static public java.util.Optional<Credit> ice_read(com.zeroc.Ice.InputStream istr, int tag)
+    {
+        if(istr.readOptional(tag, com.zeroc.Ice.OptionalFormat.FSize))
+        {
+            istr.skip(4);
+            return java.util.Optional.of(Credit.ice_read(istr));
+        }
+        else
+        {
+            return java.util.Optional.empty();
+        }
+    }
+
+    private static final Credit _nullMarshalValue = new Credit();
+
+    public static final long serialVersionUID = -1962732350L;
 }

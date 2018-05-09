@@ -55,15 +55,12 @@ public interface PremiumAccount extends Account
     {
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
         com.zeroc.Ice.InputStream istr = inS.startReadParams();
-        final com.zeroc.IceInternal.Holder<Credit> icePP_credit = new com.zeroc.IceInternal.Holder<>();
-        istr.readValue(v -> icePP_credit.value = v, Credit.class);
-        istr.readPendingValues();
+        Credit iceP_credit;
+        iceP_credit = Credit.ice_read(istr);
         inS.endReadParams();
-        Credit iceP_credit = icePP_credit.value;
         CreditInfo ret = obj.getCredit(iceP_credit, current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
-        ostr.writeValue(ret);
-        ostr.writePendingValues();
+        CreditInfo.ice_write(ostr, ret);
         inS.endWriteParams(ostr);
         return inS.setResult(ostr);
     }

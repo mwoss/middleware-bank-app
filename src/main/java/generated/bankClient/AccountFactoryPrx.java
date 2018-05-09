@@ -59,9 +59,8 @@ public interface AccountFactoryPrx extends com.zeroc.Ice.ObjectPrx
     {
         com.zeroc.IceInternal.OutgoingAsync<AccountPrx> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "createAccount", null, sync, _iceE_createAccount);
         f.invoke(true, context, null, ostr -> {
-                     ostr.writeValue(iceP_person);
+                     Person.ice_write(ostr, iceP_person);
                      ostr.writeDouble(iceP_monthlyIncome);
-                     ostr.writePendingValues();
                  }, istr -> {
                      AccountPrx ret;
                      ret = AccountPrx.uncheckedCast(istr.readProxy());

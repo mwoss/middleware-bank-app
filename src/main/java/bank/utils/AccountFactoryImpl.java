@@ -23,6 +23,7 @@ public class AccountFactoryImpl implements AccountFactory {
     //Prx, because we return interface. Pointers are similar to pointers from cpp.
     @Override
     public AccountPrx createAccount(Person person, double monthlyIncome, Current current) throws InvalidPeselStructure {
+        logger.info("New user created with id: " + person.pesel);
         if (monthlyIncome >= NormalAccountThreshold) {
             return PremiumAccountPrx.uncheckedCast(current.adapter
                     .add(new PremiumAccountImpl(person, monthlyIncome, exchangeRateValue), new Identity(isPeselValid(person.pesel), "bankClient")));

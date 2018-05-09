@@ -21,26 +21,26 @@ module bankClient{
         string reason;
     };
 
-    class Date{
+    struct Date{
         short day;
         short month;
         short year;
     };
 
-    class Person{
+    struct Person{
         string name;
         string surname;
         string pesel;
     };
 
-    class Credit{
+    struct Credit{
         double cost;
         Date startDate;
         Date endDate;
         CurrencyType currencyType;
     };
 
-    class CreditInfo{
+    struct CreditInfo{
       CurrencyType baseCurrencyType;
       double baseCreditCost;
       CurrencyType foreignCurrencyType;

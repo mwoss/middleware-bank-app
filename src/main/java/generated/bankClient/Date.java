@@ -20,8 +20,15 @@
 
 package generated.bankClient;
 
-public class Date extends com.zeroc.Ice.Value
+public class Date implements java.lang.Cloneable,
+                             java.io.Serializable
 {
+    public short day;
+
+    public short month;
+
+    public short year;
+
     public Date()
     {
     }
@@ -33,47 +40,127 @@ public class Date extends com.zeroc.Ice.Value
         this.year = year;
     }
 
-    public short day;
+    public boolean equals(java.lang.Object rhs)
+    {
+        if(this == rhs)
+        {
+            return true;
+        }
+        Date r = null;
+        if(rhs instanceof Date)
+        {
+            r = (Date)rhs;
+        }
 
-    public short month;
+        if(r != null)
+        {
+            if(this.day != r.day)
+            {
+                return false;
+            }
+            if(this.month != r.month)
+            {
+                return false;
+            }
+            if(this.year != r.year)
+            {
+                return false;
+            }
 
-    public short year;
+            return true;
+        }
+
+        return false;
+    }
+
+    public int hashCode()
+    {
+        int h_ = 5381;
+        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, "::bankClient::Date");
+        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, day);
+        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, month);
+        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, year);
+        return h_;
+    }
 
     public Date clone()
     {
-        return (Date)super.clone();
+        Date c = null;
+        try
+        {
+            c = (Date)super.clone();
+        }
+        catch(CloneNotSupportedException ex)
+        {
+            assert false; // impossible
+        }
+        return c;
     }
 
-    public static String ice_staticId()
+    public void ice_writeMembers(com.zeroc.Ice.OutputStream ostr)
     {
-        return "::bankClient::Date";
+        ostr.writeShort(this.day);
+        ostr.writeShort(this.month);
+        ostr.writeShort(this.year);
     }
 
-    @Override
-    public String ice_id()
+    public void ice_readMembers(com.zeroc.Ice.InputStream istr)
     {
-        return ice_staticId();
+        this.day = istr.readShort();
+        this.month = istr.readShort();
+        this.year = istr.readShort();
     }
 
-    public static final long serialVersionUID = 1939166430L;
-
-    @Override
-    protected void _iceWriteImpl(com.zeroc.Ice.OutputStream ostr_)
+    static public void ice_write(com.zeroc.Ice.OutputStream ostr, Date v)
     {
-        ostr_.startSlice(ice_staticId(), -1, true);
-        ostr_.writeShort(day);
-        ostr_.writeShort(month);
-        ostr_.writeShort(year);
-        ostr_.endSlice();
+        if(v == null)
+        {
+            _nullMarshalValue.ice_writeMembers(ostr);
+        }
+        else
+        {
+            v.ice_writeMembers(ostr);
+        }
     }
 
-    @Override
-    protected void _iceReadImpl(com.zeroc.Ice.InputStream istr_)
+    static public Date ice_read(com.zeroc.Ice.InputStream istr)
     {
-        istr_.startSlice();
-        day = istr_.readShort();
-        month = istr_.readShort();
-        year = istr_.readShort();
-        istr_.endSlice();
+        Date v = new Date();
+        v.ice_readMembers(istr);
+        return v;
     }
+
+    static public void ice_write(com.zeroc.Ice.OutputStream ostr, int tag, java.util.Optional<Date> v)
+    {
+        if(v != null && v.isPresent())
+        {
+            ice_write(ostr, tag, v.get());
+        }
+    }
+
+    static public void ice_write(com.zeroc.Ice.OutputStream ostr, int tag, Date v)
+    {
+        if(ostr.writeOptional(tag, com.zeroc.Ice.OptionalFormat.VSize))
+        {
+            ostr.writeSize(6);
+            ice_write(ostr, v);
+        }
+    }
+
+    static public java.util.Optional<Date> ice_read(com.zeroc.Ice.InputStream istr, int tag)
+    {
+        if(istr.readOptional(tag, com.zeroc.Ice.OptionalFormat.VSize))
+        {
+            istr.skipSize();
+            return java.util.Optional.of(Date.ice_read(istr));
+        }
+        else
+        {
+            return java.util.Optional.empty();
+        }
+    }
+
+    private static final Date _nullMarshalValue = new Date();
+
+    public static final long serialVersionUID = 413720196L;
 }

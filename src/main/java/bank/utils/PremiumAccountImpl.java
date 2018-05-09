@@ -38,9 +38,10 @@ public class PremiumAccountImpl extends AccountImpl implements PremiumAccount {
 
     private double getCreditValueInFreginCurrency(double cost, CurrencyType currencyType) throws UnsupportedCurrencyException {
         Double rate = exchangeRateValue.get(convertTypes(currencyType));
+        Double baseRate = exchangeRateValue.get(convertTypes(CurrencyType.PLN));
         if (rate == null)
             throw new UnsupportedCurrencyException("Invalid currency type");
-        return cost * rate;
+        return cost * (rate / baseRate);
     }
 
     private exchange_rate.proto.gen.CurrencyType convertTypes(CurrencyType currencyType) throws UnsupportedCurrencyException {

@@ -53,13 +53,11 @@ public interface AccountFactory extends com.zeroc.Ice.Object
     {
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
         com.zeroc.Ice.InputStream istr = inS.startReadParams();
-        final com.zeroc.IceInternal.Holder<Person> icePP_person = new com.zeroc.IceInternal.Holder<>();
+        Person iceP_person;
         double iceP_monthlyIncome;
-        istr.readValue(v -> icePP_person.value = v, Person.class);
+        iceP_person = Person.ice_read(istr);
         iceP_monthlyIncome = istr.readDouble();
-        istr.readPendingValues();
         inS.endReadParams();
-        Person iceP_person = icePP_person.value;
         AccountPrx ret = obj.createAccount(iceP_person, iceP_monthlyIncome, current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
         ostr.writeProxy(ret);

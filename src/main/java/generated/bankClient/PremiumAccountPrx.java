@@ -65,13 +65,11 @@ public interface PremiumAccountPrx extends AccountPrx
     {
         com.zeroc.IceInternal.OutgoingAsync<CreditInfo> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getCredit", null, sync, _iceE_getCredit);
         f.invoke(true, context, null, ostr -> {
-                     ostr.writeValue(iceP_credit);
-                     ostr.writePendingValues();
+                     Credit.ice_write(ostr, iceP_credit);
                  }, istr -> {
-                     final com.zeroc.IceInternal.Holder<CreditInfo> ret = new com.zeroc.IceInternal.Holder<>();
-                     istr.readValue(v -> ret.value = v, CreditInfo.class);
-                     istr.readPendingValues();
-                     return ret.value;
+                     CreditInfo ret;
+                     ret = CreditInfo.ice_read(istr);
+                     return ret;
                  });
         return f;
     }
