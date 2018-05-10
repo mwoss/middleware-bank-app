@@ -40,10 +40,6 @@ message Currency {
     repeated CurrencyType currency = 1;
 }
 
-//message CurrencyValues{
-//    repeated ExchangeRate ex= 1;
-//}
-
 
 
 

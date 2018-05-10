@@ -121,7 +121,7 @@ public class Bank {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Bank client = new Bank("localhost", 50051);
-        client.start();
+        Bank bank = new Bank("localhost", 50051);
+        bank.start();
     }
 }

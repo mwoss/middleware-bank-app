@@ -62,7 +62,7 @@ with Ice.initialize(sys.argv) as communicator:
 
     while user_task != "disconnect":
         try:
-            user_task = input("Available commands: balance, deposit, credit\n")
+            user_task = input("Available commands: balance, deposit, credit, disconnect\n")
 
             if user_task == 'balance':
                 LOG.log_msg("Your account balance: " + str(account.accountBalance()))
@@ -90,5 +90,5 @@ with Ice.initialize(sys.argv) as communicator:
             LOG.error_msg("Invalid currency\n")
         except ValueError:
             LOG.error_msg("Couldn't unpack date values\n")
-        # except Exception:
-        #     LOG.error_msg("Something went wrong. Sorry. Try again.\n")
+        except Exception:
+            LOG.error_msg("Something went wrong. Sorry. Try again.\n")
